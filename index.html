@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>byward</title>
+<meta content="byward, a sign-in gate for MCP servers. Put any MCP server behind OAuth 2.1 and your identity provider, with first-class Microsoft Entra ID support." name="description"/>
+<link href="byward-logo.svg" rel="icon" type="image/svg+xml"/>
+<style>
+:root{color-scheme:light dark;--bg:#f4f2fa;--fg:#29233b;--muted:#615873;--accent:#654091;--line:#b7a8ca;--panel:#ffffff;--code:#ebe6f4}
+@media(prefers-color-scheme:dark){:root{--bg:#191522;--fg:#f1eafb;--muted:#c0b3d2;--accent:#d0afff;--line:#716083;--panel:#262031;--code:#201a2b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace}
+main{width:min(100% - 40px,1120px);margin-inline:auto;padding:56px 0 32px;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);column-gap:48px}
+header,section,footer,div,p,pre{min-width:0}img{display:block;object-fit:contain}
+h1,h2,p{margin-top:0}h1{font-size:64px;line-height:1.05;letter-spacing:-.055em;margin-bottom:18px}h2{line-height:1.25;letter-spacing:-.025em;font-size:22px;margin-bottom:20px}p{margin-bottom:20px}
+a{color:var(--accent);text-underline-offset:4px;text-decoration-thickness:1px;overflow-wrap:anywhere}a:hover{text-decoration-thickness:2px}a:focus-visible{outline:3px solid var(--accent);outline-offset:5px;border-radius:2px}
+header{grid-column:1;grid-row:1;align-self:center;padding:24px 0}header img{width:72px;height:72px;margin-bottom:28px}.tagline{font-family:system-ui,sans-serif;font-size:33px;line-height:1.25;letter-spacing:-.025em}
+.status{display:inline-block;font-size:13px;line-height:1.6;padding:6px 12px;border:1px dashed var(--line);color:var(--muted)}.links{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:24px}.links a{display:inline-flex;align-items:center;min-height:44px}
+section{margin-top:64px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.card{padding:24px 0;border-top:2px solid var(--line)}.card b{display:block;line-height:1.35;margin-bottom:12px;color:var(--accent)}.card span{display:block;font:15px/1.65 system-ui,sans-serif;color:var(--muted)}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}pre{max-width:100%;overflow-x:auto;background:var(--code);border:1px solid var(--line);padding:16px;font-size:12px;line-height:1.9;tab-size:2}pre code{font-size:inherit;overflow-wrap:normal}
+.try{grid-column:2;grid-row:1;margin:0;padding:24px;background:var(--panel);border:1px solid var(--line);align-self:start}.try h2{font-size:17px;color:var(--accent)}.try p{font-size:13px}
+.what,.why,.release,footer{grid-column:1/-1}.what{display:grid;grid-template-columns:220px minmax(0,1fr);gap:0 32px}.flow{color:var(--muted);padding:24px;border:1px solid var(--line);line-height:1.8}.what .flow{grid-column:2;margin:0}
+ul{padding-left:22px}li{padding-left:4px;margin-bottom:16px}.release{border-top:1px solid var(--line);padding-top:32px}.release ul{list-style-type:square}.release>p:last-child{padding:20px;border-left:3px solid var(--accent);background:var(--panel)}
+footer{border-top:1px solid var(--line);padding-top:24px;margin-top:64px;color:var(--muted);font-size:12px;line-height:1.9}
+@media(max-width:850px){main{display:block}.try{margin-top:40px}.what{display:block}.tagline{font-size:30px}}
+@media(max-width:700px){main{width:calc(100% - 32px);padding-top:28px}.grid{grid-template-columns:1fr}section{margin-top:44px}h1{font-size:54px}.tagline{font-size:28px}}
+</style>
+</head>
+<body><main>
+<header>
+<img alt="byward owl logo" src="byward-logo.svg"/>
+<h1>byward</h1>
+<p class="tagline">A sign-in gate for MCP servers.</p>
+<span class="status">Pre-release · open source · Apache-2.0</span>
+<div class="links">
+<a href="https://github.com/byward-dev/byward">GitHub</a>
+<a href="https://github.com/byward-dev/byward/blob/main/docs/how-to/quickstart-entra.md">Quickstart</a>
+<a href="https://github.com/byward-dev/byward/blob/main/docs/security-posture.md">Security posture</a>
+</div>
+</header>
+<section class="try"><h2>Try it</h2>
+<p>With an Entra app registration and a sealing key (the
+<a href="https://github.com/byward-dev/byward/blob/main/docs/how-to/quickstart-entra.md">quickstart</a> walks through both):</p>
+<pre><code>docker run --rm -p 8080:8080 \
+  -v "$PWD/byward-data:/var/lib/byward" \
+  -v "$PWD/entra-client-secret:/run/secrets/entra-client-secret:ro" \
+  -e BYWARD_PUBLIC_URL=https://mcp.example.com/mcp \
+  -e BYWARD_UPSTREAM_URL=http://upstream.internal:3001/mcp \
+  -e BYWARD_ENTRA_TENANT="$TENANT_ID" \
+  -e BYWARD_ENTRA_CLIENT_ID="$APP_ID" \
+  -e BYWARD_ENTRA_CLIENT_SECRET_FILE=/run/secrets/entra-client-secret \
+  -e BYWARD_LISTEN=0.0.0.0:8080 \
+  ghcr.io/byward-dev/byward:latest</code></pre>
+<p>Then point your MCP client at <code>https://mcp.example.com/mcp</code>.</p>
+</section>
+<section class="what"><h2>What it does</h2>
+<p>byward sits in front of any MCP server and makes every user sign in with your identity provider
+before a single request reaches it. MCP clients such as Claude Code connect to byward with standard
+OAuth 2.1; byward signs the user in with Microsoft Entra ID, shows a consent page, and issues its own
+short-lived tokens. Your MCP server never sees a token from the client or the IdP.</p>
+<p class="flow">MCP client → <b>byward</b> (OAuth 2.1, consent, Entra sign-in) → your MCP server</p>
+</section>
+<section class="why"><h2>Why byward</h2>
+<div class="grid">
+<div class="card"><b>One binary</b><span>A single Go binary or container. Configured by five environment variables. Built-in SQLite; no Redis, no database server.</span></div>
+<div class="card"><b>Entra done properly</b><span>Single-tenant apps, v2 tokens, app roles and groups as an access gate, clear fixes for every AADSTS error.</span></div>
+<div class="card"><b>Consent before sign-in</b><span>Users see which app is asking, who publishes it and where it returns to, before they reach the IdP.</span></div>
+<div class="card"><b>No token passthrough</b><span>As the MCP spec requires. The upstream gets a request from byward, never a client's or IdP's token.</span></div>
+<div class="card"><b>Revocation that works</b><span>Rotating refresh tokens with reuse detection, a <code>/revoke</code> endpoint, and operator commands to sign out one user or everyone.</span></div>
+<div class="card"><b>Auditable</b><span>A structured audit stream, Prometheus metrics, and signed releases with SBOM and build provenance.</span></div>
+</div>
+</section>
+<section class="release"><h2>Status</h2>
+<ul>
+<li><b>Works today:</b> HTTP MCP servers, Microsoft Entra ID, Claude Code, consent, refresh and revocation, SQLite state, rate limits, audit stream.</li>
+<li><b>Coming in v0.1:</b> sign-in for Claude.ai, VS Code and Cursor without manual client setup (Client ID Metadata Documents and dynamic registration), stdio MCP servers, <code>byward doctor</code>.</li>
+<li><b>Later:</b> On-Behalf-Of tokens for downstream APIs, Entra app-only tokens, other identity providers.</li>
+</ul>
+<p>byward is pre-1.0 and has not had an independent security audit. Read the
+<a href="https://github.com/byward-dev/byward/blob/main/docs/security-posture.md">security posture</a> before deploying it.</p>
+</section>
+<footer>
+  byward is named after the Byward Tower, the gatehouse of the Tower of London.<br/>
+<a href="https://github.com/byward-dev/byward">GitHub</a> ·
+  <a href="https://bsky.app/profile/byward.dev">Bluesky</a> ·
+  <a href="https://x.com/bywarddev">X</a><br/>
+  MCP is a trademark of LF Projects, LLC. byward is an independent project.
+</footer>
+</main></body></html>
