@@ -31,7 +31,7 @@ footer{border-top:1px solid var(--line);padding-top:24px;margin-top:64px;color:v
 <img alt="byward owl logo" src="byward-logo.svg"/>
 <h1>byward</h1>
 <p class="tagline">A sign-in gate for MCP servers.</p>
-<span class="status">Release <a href="https://github.com/byward-dev/byward/releases/tag/v0.1.0">v0.1.0</a> · open source · Apache-2.0</span>
+<span class="status">Release <a href="https://github.com/byward-dev/byward/releases/tag/v0.1.1">v0.1.1</a> · open source · Apache-2.0</span>
 <div class="links">
 <a href="https://github.com/byward-dev/byward">GitHub</a>
 <a href="https://github.com/byward-dev/byward/blob/main/docs/how-to/quickstart-entra.md">Quickstart</a>
@@ -50,7 +50,7 @@ footer{border-top:1px solid var(--line);padding-top:24px;margin-top:64px;color:v
   -e BYWARD_ENTRA_CLIENT_ID="$APP_ID" \
   -e BYWARD_ENTRA_CLIENT_SECRET_FILE=/run/secrets/entra-client-secret \
   -e BYWARD_LISTEN=0.0.0.0:8080 \
-  ghcr.io/byward-dev/byward:v0.1.0</code></pre>
+  ghcr.io/byward-dev/byward:v0.1.1</code></pre>
 <p>Then point your MCP client at <code>https://mcp.example.com/mcp</code>.</p>
 </section>
 <section class="what"><h2>What it does</h2>
@@ -72,7 +72,7 @@ short-lived tokens. Your MCP server never sees a token from the client or the Id
 </section>
 <section class="release"><h2>Status</h2>
 <ul>
-<li><b>In v0.1.0:</b> HTTP and stdio MCP servers, Microsoft Entra ID, consent, refresh and revocation, SQLite state, rate limits, audit stream, <code>byward doctor</code>. Claude Code, Claude.ai, ChatGPT, VS Code and Cursor sign in without manual client setup (Client ID Metadata Documents and dynamic registration), verified against a real tenant.</li>
+<li><b>In v0.1.1:</b> HTTP and stdio MCP servers, Microsoft Entra ID, consent, refresh and revocation, SQLite state, rate limits, audit stream, <code>byward doctor</code>. Claude Code, Claude.ai, ChatGPT, VS Code and Cursor sign in without manual client setup (Client ID Metadata Documents and dynamic registration), verified against a real tenant.</li>
 <li><b>Later:</b> On-Behalf-Of tokens for downstream APIs, Entra app-only tokens, other identity providers.</li>
 </ul>
 <p>byward is pre-1.0 and has not had an independent security audit. Read the
