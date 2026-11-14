@@ -1,0 +1,30 @@
+# Fails when index.html links to a byward blob/main or tree/main path that byward's
+# internal/doclinks/site-links.txt does not list, so every site link is protected by byward's own check.
+name: repo-links
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1" # weekly: catches a list changed on byward's side
+permissions:
+  contents: read
+jobs:
+  listed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Every byward link in index.html is listed in byward's site-links.txt
+        run: |
+          set -eu
+          curl -fsSL --retry 3 https://raw.githubusercontent.com/byward-dev/byward/main/internal/doclinks/site-links.txt | grep -v '^#' | grep . | sort -u > listed.txt
+          grep -oE 'https://github\.com/byward-dev/byward/(blob|tree)/main/[^"#?) ]+' index.html | sort -u > linked.txt
+          missing=$(comm -23 linked.txt listed.txt)
+          if [ -n "$missing" ]; then
+            echo "index.html links to byward paths that byward's internal/doclinks/site-links.txt does not list."
+            echo "Add them there first (a byward PR), so a byward PR that moves them fails:"
+            echo "$missing"
+            exit 1
+          fi
