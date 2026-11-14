@@ -57,7 +57,9 @@ footer{border-top:1px solid var(--line);padding-top:24px;margin-top:64px;color:v
 <p>byward sits in front of any MCP server and makes every user sign in with your identity provider
 before a single request reaches it. MCP clients such as Claude Code connect to byward with standard
 OAuth 2.1; byward signs the user in with Microsoft Entra ID, shows a consent page, and issues its own
-short-lived tokens. Your MCP server never sees a token from the client or the IdP.</p>
+short-lived tokens. Your MCP server never sees a token from the client or the IdP. The
+<a href="https://github.com/byward-dev/byward/releases/tag/v0.2.0-rc.1">v0.2.0 pre-release</a> adds
+Okta, Keycloak, Google, Auth0 and any other OpenID Connect provider.</p>
 <p class="flow">MCP client → <b>byward</b> (OAuth 2.1, consent, Entra sign-in) → your MCP server</p>
 </section>
 <section class="why"><h2>Why byward</h2>
@@ -73,7 +75,8 @@ short-lived tokens. Your MCP server never sees a token from the client or the Id
 <section class="release"><h2>Status</h2>
 <ul>
 <li><b>In v0.1.1:</b> HTTP and stdio MCP servers, Microsoft Entra ID, consent, refresh and revocation, SQLite state, rate limits, audit stream, <code>byward doctor</code>. Claude Code, Claude.ai, ChatGPT, VS Code and Cursor sign in without manual client setup (Client ID Metadata Documents and dynamic registration), verified against a real tenant.</li>
-<li><b>Later:</b> On-Behalf-Of tokens for downstream APIs, Entra app-only tokens, other identity providers.</li>
+<li><b>Pre-release <a href="https://github.com/byward-dev/byward/releases/tag/v0.2.0-rc.1">v0.2.0-rc.1</a>:</b> Okta, Keycloak, Google, Auth0 and any OpenID Connect provider, each verified in a live sign-in run; On-Behalf-Of tokens for downstream APIs such as Microsoft Graph; Entra app-only tokens for services.</li>
+<li><b>Next (on <code>main</code>):</b> TLS on the proxy itself with your certificate, a PostgreSQL store for several replicas, and Auth0 roles in the access gate.</li>
 </ul>
 <p>byward is pre-1.0 and has not had an independent security audit. Read the
 <a href="https://github.com/byward-dev/byward/blob/main/docs/security-posture.md">security posture</a> before deploying it.</p>
